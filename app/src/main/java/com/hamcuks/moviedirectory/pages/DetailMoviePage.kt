@@ -17,6 +17,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -24,7 +25,6 @@ import androidx.navigation.NavController
 import coil.compose.rememberImagePainter
 import com.hamcuks.moviedirectory.R
 import com.hamcuks.moviedirectory.model.ResultMovie
-import com.hamcuks.moviedirectory.utils.ProgressIndicator
 import com.hamcuks.moviedirectory.viewmodel.MovieViewModel
 
 @Composable
@@ -44,7 +44,7 @@ fun DetailMoviePage (movieWM: MovieViewModel, movieId: Int, navController: NavCo
                     }
             )
             Spacer(Modifier.width(16.dp))
-            Text("Movie Details", fontSize = 18.sp, fontWeight = FontWeight.Medium)
+            Text(stringResource(R.string.detail_page), fontSize = 18.sp, fontWeight = FontWeight.Medium)
         }
         Spacer(Modifier.height(24.dp))
         Box (
