@@ -1,9 +1,13 @@
 package com.hamcuks.moviedirectory.pages
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.Icon
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.KeyboardArrowLeft
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -14,14 +18,26 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import coil.compose.rememberImagePainter
 import com.hamcuks.moviedirectory.R
-import com.hamcuks.moviedirectory.utils.BottomBar
 
 @Composable
 fun AboutPage (navController: NavController) {
     Scaffold(
-        bottomBar = { BottomBar(navController = navController)},
         content = {
             Column (Modifier.padding(24.dp)) {
+                Row (verticalAlignment = Alignment.CenterVertically) {
+                    Icon(
+                        Icons.Outlined.KeyboardArrowLeft,
+                        contentDescription = "Arrow Back",
+                        Modifier
+                            .size(24.dp)
+                            .clickable {
+                                navController.popBackStack()
+                            }
+                    )
+                    Spacer(Modifier.width(16.dp))
+                    Text(stringResource(R.string.about_page), fontSize = 18.sp, fontWeight = FontWeight.Medium)
+                }
+                Spacer(Modifier.height(24.dp))
                 Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
                     Image(
                         painter = rememberImagePainter(R.drawable.ic_app),

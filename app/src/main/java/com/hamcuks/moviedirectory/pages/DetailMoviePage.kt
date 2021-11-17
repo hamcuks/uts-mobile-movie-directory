@@ -29,7 +29,7 @@ import com.hamcuks.moviedirectory.viewmodel.MovieViewModel
 
 @Composable
 fun DetailMoviePage (movieWM: MovieViewModel, movieId: Int, navController: NavController) {
-    movieWM.fetchMovieById(id = movieId)
+    //movieWM.fetchMovieById(id = movieId)
     var data: ResultMovie = movieWM.detailMovie!!
 
     Column (Modifier.padding(24.dp)) {
@@ -91,15 +91,21 @@ fun DetailMoviePage (movieWM: MovieViewModel, movieId: Int, navController: NavCo
                 }
                 Spacer(Modifier.width(16.dp))
                 Row (verticalAlignment = Alignment.CenterVertically){
-                    Image(painter = painterResource(id = R.drawable.ic_date), contentDescription = "Rating Icon", Modifier.size(16.dp))
+                    Image(painter = painterResource(id = R.drawable.ic_date), contentDescription = "Release Date Icon", Modifier.size(16.dp))
                     Spacer(Modifier.width(8.dp))
                     Text("${data.releaseDate.split("-")[0]}", fontWeight = FontWeight.Medium)
                 }
                 Spacer(Modifier.width(16.dp))
                 Row (verticalAlignment = Alignment.CenterVertically){
-                    Image(painter = painterResource(id = R.drawable.ic_eye), contentDescription = "Rating Icon", Modifier.size(16.dp))
+                    Image(painter = painterResource(id = R.drawable.ic_eye), contentDescription = "Views Icon", Modifier.size(16.dp))
                     Spacer(Modifier.width(8.dp))
                     Text("${data.popularity}", fontWeight = FontWeight.Medium)
+                }
+                Spacer(Modifier.width(16.dp))
+                Row (verticalAlignment = Alignment.CenterVertically){
+                    Image(painter = painterResource(id = R.drawable.ic_language), contentDescription = "Language Icon", Modifier.size(16.dp))
+                    Spacer(Modifier.width(8.dp))
+                    Text("${data.originalLanguage}", fontWeight = FontWeight.Medium)
                 }
             }
         }

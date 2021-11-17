@@ -9,7 +9,8 @@ import androidx.compose.ui.graphics.Color
 private val LightColorPalette = lightColors(
         primary = Blue,
         secondary = Teal200,
-        surface = KWhite
+        surface = KWhite,
+        background = KWhite
 
         /* Other default colors to override
     background = Color.White,

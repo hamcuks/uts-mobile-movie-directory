@@ -7,7 +7,11 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Info
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -16,20 +20,29 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import coil.compose.rememberImagePainter
 import com.hamcuks.moviedirectory.R
 import com.hamcuks.moviedirectory.model.ResultMovie
-import com.hamcuks.moviedirectory.utils.BottomBar
+import com.hamcuks.moviedirectory.ui.theme.KWhite
 import com.hamcuks.moviedirectory.utils.ProgressIndicator
 import com.hamcuks.moviedirectory.viewmodel.MovieViewModel
 
 @Composable
 fun HomePage(movieVM: MovieViewModel, navController: NavController) {
     Scaffold(
-        bottomBar = { BottomBar(navController = navController) },
+        floatingActionButton = {
+            FloatingActionButton(
+                backgroundColor = Color.Black,
+                contentColor = KWhite,
+                onClick = { navController.navigate("aboutPage") }
+            ) {
+                Icon(Icons.Outlined.Info, contentDescription = "")
+            }
+        },
         content = {
             Column (modifier = Modifier
                 .padding(24.dp)
@@ -45,7 +58,7 @@ fun HomePage(movieVM: MovieViewModel, navController: NavController) {
 @Composable
 fun MovieList(movieList: List<ResultMovie>, navController: NavController, movieVM: MovieViewModel) {
 
-    if (movieList.size > 0) {
+    if (movieList.isNotEmpty()) {
         LazyColumn {
             itemsIndexed(items = movieList) { _, item -> MovieCard(data = item, navController = navController, movieVM = movieVM)}
         }
@@ -59,7 +72,7 @@ fun MovieList(movieList: List<ResultMovie>, navController: NavController, movieV
 fun MovieCard(data: ResultMovie, navController: NavController, movieVM: MovieViewModel) {
     Box (
         modifier = Modifier
-            .height(200.dp)
+            .height(250.dp)
             .padding(bottom = 24.dp)
     ) {
         Card (
@@ -106,6 +119,8 @@ fun MovieCard(data: ResultMovie, navController: NavController, movieVM: MovieVie
                         Text("${data.releaseDate.split("-")[0]}", fontWeight = FontWeight.Medium)
                     }
                 }
+                Spacer(modifier = Modifier.height(16.dp))
+                Text(text = "${data.overview}", fontSize = 12.sp, fontWeight = FontWeight.Normal, overflow = TextOverflow.Ellipsis, maxLines = 2, lineHeight = 18.sp)
             }
         }
     }

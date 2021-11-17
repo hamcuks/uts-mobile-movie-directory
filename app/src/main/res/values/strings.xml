@@ -2,8 +2,7 @@
     <string name="app_name">Movie Directory</string>
     <string name="detail_page">Movie Details</string>
     <string name="app_desc">App that provides list of movies in the world and the details</string>
-    <string name="home_nav">Home</string>
-    <string name="about_nav">About</string>
+    <string name="about_page">About App</string>
     <string name="loading_data">Loading Data</string>
     <string name="name">Name</string>
     <string name="nim">No. Student</string>
