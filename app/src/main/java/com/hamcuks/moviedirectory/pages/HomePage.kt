@@ -8,6 +8,8 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Favorite
+import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -35,17 +37,27 @@ import com.hamcuks.moviedirectory.viewmodel.MovieViewModel
 fun HomePage(movieVM: MovieViewModel, navController: NavController) {
     Scaffold(
         floatingActionButton = {
-            FloatingActionButton(
-                backgroundColor = Color.Black,
-                contentColor = KWhite,
-                onClick = { navController.navigate("aboutPage") }
-            ) {
-                Icon(Icons.Outlined.Info, contentDescription = "")
+            Row {
+                FloatingActionButton(
+                    backgroundColor = Color.Black,
+                    contentColor = KWhite,
+                    onClick = { navController.navigate("aboutPage") }
+                ) {
+                    Icon(Icons.Outlined.Info, contentDescription = "")
+                }
+                Spacer(Modifier.width(16.dp))
+                FloatingActionButton(
+                    backgroundColor = Color.Black,
+                    contentColor = KWhite,
+                    onClick = { navController.navigate("aboutPage") }
+                ) {
+                    Icon(Icons.Outlined.Favorite, contentDescription = "Favourite Page")
+                }
             }
         },
         content = {
             Column (modifier = Modifier
-                .padding(24.dp)
+                .padding(start = 24.dp, end = 24.dp, top = 24.dp)
             ) {
                 Text(stringResource(R.string.app_name), fontSize = 18.sp, fontWeight = FontWeight.Medium)
                 Spacer(Modifier.height(24.dp))
@@ -104,20 +116,22 @@ fun MovieCard(data: ResultMovie, navController: NavController, movieVM: MovieVie
                 modifier = Modifier
                     .padding(16.dp)
             ){
-                Text(text = "${data.title}", fontSize = 18.sp, fontWeight = FontWeight.Medium)
                 Spacer(modifier = Modifier.height(16.dp))
-                Row {
-                    Row (verticalAlignment = Alignment.CenterVertically) {
-                        Image(painter = painterResource(id = com.hamcuks.moviedirectory.R.drawable.ic_star), contentDescription = "Rating Icon")
-                        Spacer(Modifier.width(8.dp))
-                        Text("${data.voteAverage}", fontWeight = FontWeight.Medium)
+                Row(Modifier.fillMaxWidth(),verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceBetween) {
+                    Row {
+                        Row (verticalAlignment = Alignment.CenterVertically) {
+                            Image(painter = painterResource(id = com.hamcuks.moviedirectory.R.drawable.ic_star), contentDescription = "Rating Icon")
+                            Spacer(Modifier.width(8.dp))
+                            Text("${data.voteAverage}", fontWeight = FontWeight.Medium)
+                        }
+                        Spacer(Modifier.width(16.dp))
+                        Row (verticalAlignment = Alignment.CenterVertically){
+                            Image(painter = painterResource(id = com.hamcuks.moviedirectory.R.drawable.ic_date), contentDescription = "Rating Icon", Modifier.size(16.dp))
+                            Spacer(Modifier.width(8.dp))
+                            Text("${data.releaseDate.split("-")[0]}", fontWeight = FontWeight.Medium)
+                        }
                     }
-                    Spacer(Modifier.width(16.dp))
-                    Row (verticalAlignment = Alignment.CenterVertically){
-                        Image(painter = painterResource(id = com.hamcuks.moviedirectory.R.drawable.ic_date), contentDescription = "Rating Icon", Modifier.size(16.dp))
-                        Spacer(Modifier.width(8.dp))
-                        Text("${data.releaseDate.split("-")[0]}", fontWeight = FontWeight.Medium)
-                    }
+                    Icon(Icons.Outlined.FavoriteBorder, contentDescription = "Favourite Page")
                 }
                 Spacer(modifier = Modifier.height(16.dp))
                 Text(text = "${data.overview}", fontSize = 12.sp, fontWeight = FontWeight.Normal, overflow = TextOverflow.Ellipsis, maxLines = 2, lineHeight = 18.sp)
