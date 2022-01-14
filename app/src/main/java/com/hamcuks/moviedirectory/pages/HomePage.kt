@@ -1,5 +1,8 @@
 package com.hamcuks.moviedirectory.pages
 
+import android.util.Log
+import androidx.activity.ComponentActivity
+import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -8,12 +11,11 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.outlined.Favorite
 import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material.icons.outlined.Info
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -25,16 +27,20 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import coil.compose.rememberImagePainter
 import com.hamcuks.moviedirectory.R
 import com.hamcuks.moviedirectory.model.ResultMovie
 import com.hamcuks.moviedirectory.ui.theme.KWhite
 import com.hamcuks.moviedirectory.utils.ProgressIndicator
+import com.hamcuks.moviedirectory.viewmodel.FavouriteViewModel
 import com.hamcuks.moviedirectory.viewmodel.MovieViewModel
 
 @Composable
-fun HomePage(movieVM: MovieViewModel, navController: NavController) {
+fun HomePage(activity: ComponentActivity, movieVM: MovieViewModel, favVM: FavouriteViewModel, navController: NavController) {
     Scaffold(
         floatingActionButton = {
             Row {
@@ -49,7 +55,7 @@ fun HomePage(movieVM: MovieViewModel, navController: NavController) {
                 FloatingActionButton(
                     backgroundColor = Color.Black,
                     contentColor = KWhite,
-                    onClick = { navController.navigate("aboutPage") }
+                    onClick = { navController.navigate("favouritePage") }
                 ) {
                     Icon(Icons.Outlined.Favorite, contentDescription = "Favourite Page")
                 }
@@ -61,18 +67,18 @@ fun HomePage(movieVM: MovieViewModel, navController: NavController) {
             ) {
                 Text(stringResource(R.string.app_name), fontSize = 18.sp, fontWeight = FontWeight.Medium)
                 Spacer(Modifier.height(24.dp))
-                MovieList(movieList = movieVM.movieList, navController = navController, movieVM = movieVM)
+                MovieList(activity,movieList = movieVM.movieList, favVM = favVM, navController = navController, movieVM = movieVM)
             }
         }
     )
 }
 
 @Composable
-fun MovieList(movieList: List<ResultMovie>, navController: NavController, movieVM: MovieViewModel) {
+fun MovieList(activity: ComponentActivity, movieList: List<ResultMovie>, favVM: FavouriteViewModel, navController: NavController, movieVM: MovieViewModel) {
 
     if (movieList.isNotEmpty()) {
         LazyColumn {
-            itemsIndexed(items = movieList) { _, item -> MovieCard(data = item, navController = navController, movieVM = movieVM)}
+            itemsIndexed(items = movieList) { _, item -> MovieCard(activity, data = item, favVM = favVM, navController = navController, movieVM = movieVM)}
         }
     } else {
         ProgressIndicator()
@@ -81,7 +87,15 @@ fun MovieList(movieList: List<ResultMovie>, navController: NavController, movieV
 }
 
 @Composable
-fun MovieCard(data: ResultMovie, navController: NavController, movieVM: MovieViewModel) {
+fun MovieCard(activity: ComponentActivity, data: ResultMovie, favVM: FavouriteViewModel, navController: NavController, movieVM: MovieViewModel) {
+    var isFavourite: Boolean by remember {mutableStateOf(false)}
+
+    favVM.getFavs().observe(activity) {
+        isFavourite = it.any { e -> e.id == data.id }
+    }
+
+    Log.d("DEBUG", isFavourite.toString())
+
     Box (
         modifier = Modifier
             .height(250.dp)
@@ -116,6 +130,7 @@ fun MovieCard(data: ResultMovie, navController: NavController, movieVM: MovieVie
                 modifier = Modifier
                     .padding(16.dp)
             ){
+                Text(text = "${data.title}", fontSize = 18.sp, fontWeight = FontWeight.Medium)
                 Spacer(modifier = Modifier.height(16.dp))
                 Row(Modifier.fillMaxWidth(),verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceBetween) {
                     Row {
@@ -131,7 +146,21 @@ fun MovieCard(data: ResultMovie, navController: NavController, movieVM: MovieVie
                             Text("${data.releaseDate.split("-")[0]}", fontWeight = FontWeight.Medium)
                         }
                     }
-                    Icon(Icons.Outlined.FavoriteBorder, contentDescription = "Favourite Page")
+                    IconButton(onClick = {
+                            if(isFavourite) {
+                                favVM.deleteFavourite(data)
+                            } else {
+                                favVM.addFavourite(data)
+                            }
+                        }
+                    ) {
+                        if(isFavourite) {
+                            Icon( Icons.Filled.Favorite, tint = Color.Red, contentDescription = "Favourite Page")
+                        } else {
+                            Icon( Icons.Outlined.FavoriteBorder, contentDescription = "Favourite Page")
+                        }
+                    }
+
                 }
                 Spacer(modifier = Modifier.height(16.dp))
                 Text(text = "${data.overview}", fontSize = 12.sp, fontWeight = FontWeight.Normal, overflow = TextOverflow.Ellipsis, maxLines = 2, lineHeight = 18.sp)

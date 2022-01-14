@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Kumpulan Film</string>
+    <string name="detail_page">Rincian Film</string>
+    <string name="app_desc">Aplikasi yang menyediakan kumpulan film beserta deskripsinya</string>
+    <string name="fav_page">Favorit</string>
+    <string name="about_page">Tentang Aplikasi</string>
+    <string name="loading_data">Memuat Data</string>
+    <string name="name">Nama</string>
+    <string name="nim">NIM</string>
+    <string name="kelas">Kelas</string>
+</resources>
