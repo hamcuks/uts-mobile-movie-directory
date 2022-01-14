@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.text.toLowerCase
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.hamcuks.moviedirectory.model.ResultMovie
@@ -15,6 +16,7 @@ import java.lang.Exception
 class MovieViewModel : ViewModel() {
     private val api: ApiService = MovieDirectoriApi.retrofitService
     var movieList: List<ResultMovie> by mutableStateOf(listOf())
+    var searchMovie: List<ResultMovie> by mutableStateOf(listOf())
     var detailMovie: ResultMovie? = null
 
     init {

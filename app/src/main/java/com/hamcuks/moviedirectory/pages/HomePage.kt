@@ -2,13 +2,13 @@ package com.hamcuks.moviedirectory.pages
 
 import android.util.Log
 import androidx.activity.ComponentActivity
-import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
@@ -23,24 +23,34 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import coil.compose.rememberImagePainter
 import com.hamcuks.moviedirectory.R
 import com.hamcuks.moviedirectory.model.ResultMovie
 import com.hamcuks.moviedirectory.ui.theme.KWhite
+import com.hamcuks.moviedirectory.ui.theme.kGrey
 import com.hamcuks.moviedirectory.utils.ProgressIndicator
 import com.hamcuks.moviedirectory.viewmodel.FavouriteViewModel
 import com.hamcuks.moviedirectory.viewmodel.MovieViewModel
 
 @Composable
 fun HomePage(activity: ComponentActivity, movieVM: MovieViewModel, favVM: FavouriteViewModel, navController: NavController) {
+
+    var textValue by remember { mutableStateOf("")}
+    var data :List<ResultMovie>
+
+    if(textValue.isNotEmpty()) {
+        data = movieVM.movieList.filter { e -> e.title.lowercase().contains(textValue.lowercase()) || e.overview.lowercase().contains(textValue.lowercase()) }
+    } else {
+        data = movieVM.movieList
+    }
+
+
     Scaffold(
         floatingActionButton = {
             Row {
@@ -67,23 +77,43 @@ fun HomePage(activity: ComponentActivity, movieVM: MovieViewModel, favVM: Favour
             ) {
                 Text(stringResource(R.string.app_name), fontSize = 18.sp, fontWeight = FontWeight.Medium)
                 Spacer(Modifier.height(24.dp))
-                MovieList(activity,movieList = movieVM.movieList, favVM = favVM, navController = navController, movieVM = movieVM)
+                TextField(
+                    value = textValue,
+                    onValueChange = {
+                        textValue = it
+                        Log.d("DEBUG", textValue)
+                    },
+                    label = {Text("Cari Disini...")},
+                    textStyle = TextStyle(color = Color.Black),
+                    colors = TextFieldDefaults.textFieldColors(
+                        backgroundColor = kGrey,
+                        focusedLabelColor = Color.Black,
+                    ),
+                    maxLines = 1,
+                    modifier = Modifier.fillMaxWidth()
+                )
+                Spacer(Modifier.height(24.dp))
+                if (data.isNotEmpty()) {
+                    LazyColumn {
+                        itemsIndexed(items = data) { _, item -> MovieCard(activity, data = item, favVM = favVM, navController = navController, movieVM = movieVM)}
+                    }
+                } else {
+                    if(textValue.isNotEmpty()) {
+                        Column(
+                            Modifier.fillMaxWidth()
+                                .fillMaxHeight(),
+                            verticalArrangement = Arrangement.Center,
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+                            Text("Tidak Ada Data!")
+                        }
+                    } else {
+                        ProgressIndicator()
+                    }
+                }
             }
         }
     )
-}
-
-@Composable
-fun MovieList(activity: ComponentActivity, movieList: List<ResultMovie>, favVM: FavouriteViewModel, navController: NavController, movieVM: MovieViewModel) {
-
-    if (movieList.isNotEmpty()) {
-        LazyColumn {
-            itemsIndexed(items = movieList) { _, item -> MovieCard(activity, data = item, favVM = favVM, navController = navController, movieVM = movieVM)}
-        }
-    } else {
-        ProgressIndicator()
-    }
-
 }
 
 @Composable

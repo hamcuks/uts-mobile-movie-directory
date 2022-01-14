@@ -6,7 +6,7 @@ import com.hamcuks.moviedirectory.model.ResultMovie
 
 @Dao
 interface FavouriteDao {
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert
     suspend fun addFavourite(data: ResultMovie)
 
     @Delete
