@@ -8,4 +8,5 @@
     <string name="name">Nama</string>
     <string name="nim">NIM</string>
     <string name="kelas">Kelas</string>
+    <string name="search_placeholder">Cari Film</string>
 </resources>

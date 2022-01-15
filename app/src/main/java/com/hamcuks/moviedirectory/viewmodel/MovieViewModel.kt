@@ -16,7 +16,6 @@ import java.lang.Exception
 class MovieViewModel : ViewModel() {
     private val api: ApiService = MovieDirectoriApi.retrofitService
     var movieList: List<ResultMovie> by mutableStateOf(listOf())
-    var searchMovie: List<ResultMovie> by mutableStateOf(listOf())
     var detailMovie: ResultMovie? = null
 
     init {

@@ -8,5 +8,4 @@ class FavouriteRepository(private val favouriteDao: FavouriteDao) {
     suspend fun addFavourite(data: ResultMovie) = favouriteDao.addFavourite(data)
     suspend fun deleteFavourite(data: ResultMovie) = favouriteDao.deleteFavourite(data)
     fun getAllFavs(): LiveData<List<ResultMovie>> = favouriteDao.getAllFavs()
-    fun isFavourite(id: Int): LiveData<List<ResultMovie>> = favouriteDao.isFavourite(id)
 }

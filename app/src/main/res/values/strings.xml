@@ -8,5 +8,5 @@
     <string name="name">Name</string>
     <string name="nim">No. Student</string>
     <string name="kelas">Class</string>
-    <string name="title_activity_test">Test</string>
+    <string name="search_placeholder">Search movie</string>
 </resources>

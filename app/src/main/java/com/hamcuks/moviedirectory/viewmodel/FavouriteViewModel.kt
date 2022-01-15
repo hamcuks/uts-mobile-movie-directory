@@ -24,7 +24,6 @@ class FavouriteVMFactory(private val application: Application) : ViewModelProvid
 
 class FavouriteViewModel(application: Application) : ViewModel() {
     private val repository: FavouriteRepository
-    var movieList: List<ResultMovie> by mutableStateOf(listOf())
     private var _fetchAll: LiveData<List<ResultMovie>>
 
     init {
@@ -48,16 +47,5 @@ class FavouriteViewModel(application: Application) : ViewModel() {
             repository.deleteFavourite(data)
         }
     }
-
-    fun isFavourite(id: Int, activity: ComponentActivity) : Boolean {
-
-        var res: Boolean = false
-        _fetchAll.observe(activity) {
-            Log.d("DEBUG FAV", res.toString())
-        }
-
-        return res
-    }
-
 
 }

@@ -14,7 +14,4 @@ interface FavouriteDao {
 
     @Query("SELECT * FROM movie")
     fun getAllFavs(): LiveData<List<ResultMovie>>
-
-    @Query("SELECT * FROM movie WHERE id=:id")
-    open fun isFavourite(id: Int): LiveData<List<ResultMovie>>
 }

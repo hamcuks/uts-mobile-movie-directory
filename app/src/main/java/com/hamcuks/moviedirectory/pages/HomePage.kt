@@ -83,7 +83,7 @@ fun HomePage(activity: ComponentActivity, movieVM: MovieViewModel, favVM: Favour
                         textValue = it
                         Log.d("DEBUG", textValue)
                     },
-                    label = {Text("Cari Disini...")},
+                    label = {Text(stringResource(id = R.string.search_placeholder))},
                     textStyle = TextStyle(color = Color.Black),
                     colors = TextFieldDefaults.textFieldColors(
                         backgroundColor = kGrey,
@@ -100,7 +100,8 @@ fun HomePage(activity: ComponentActivity, movieVM: MovieViewModel, favVM: Favour
                 } else {
                     if(textValue.isNotEmpty()) {
                         Column(
-                            Modifier.fillMaxWidth()
+                            Modifier
+                                .fillMaxWidth()
                                 .fillMaxHeight(),
                             verticalArrangement = Arrangement.Center,
                             horizontalAlignment = Alignment.CenterHorizontally

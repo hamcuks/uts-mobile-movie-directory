@@ -12,11 +12,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MovieDirectory">
         <activity
-            android:name=".pages.Test"
-            android:exported="false"
-            android:label="@string/title_activity_test"
-            android:theme="@style/Theme.MovieDirectory.NoActionBar" />
-        <activity
             android:name=".MainActivity"
             android:exported="true"
             android:label="@string/app_name"
